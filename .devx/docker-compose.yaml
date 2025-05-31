@@ -1,0 +1,7 @@
+services:
+  devx:
+    image: ghcr.io/rmkraus/test-workshop
+    ports:
+    - 8888:8888
+    volumes:
+    - ../test-workshop:/project:cached

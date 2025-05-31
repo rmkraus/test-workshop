@@ -1,0 +1,6 @@
+# Core dependencies
+jupyterlab>3.0
+jupyter_app_launcher
+
+# Add additional dependencies here
+
