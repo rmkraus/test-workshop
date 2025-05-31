@@ -1,6 +1,6 @@
 services:
   devx:
-    image: ghcr.io/rmkraus/test-workshop
+    image: ghcr.io/rmkraus/test-workshop/devx:main
     ports:
     - 8888:8888
     volumes:
