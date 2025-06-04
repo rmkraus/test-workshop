@@ -297,7 +297,7 @@ services:
     environment: &id003
       AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
       AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
-      BACKEND_PORT: ${BACKEND_PORT:-8100}
+      BACKEND_PORT: '8100'
       CA_RAG_EMBEDDINGS_DIMENSION: '500'
       DISABLE_CA_RAG: ${DISABLE_CA_RAG:-false}
       DISABLE_CV_PIPELINE: ${DISABLE_CV_PIPELINE:-true}
@@ -308,7 +308,7 @@ services:
       ENABLE_RIVA_SERVER_READINESS_CHECK: ${ENABLE_RIVA_SERVER_READINESS_CHECK:-}
       FORCE_CA_RAG_RESET: ${FORCE_CA_RAG_RESET:-}
       FORCE_SW_AV1_DECODER: ${FORCE_SW_AV1_DECODER:-}
-      FRONTEND_PORT: ${FRONTEND_PORT:-9100}
+      FRONTEND_PORT: '9100'
       GDINO_INFERENCE_INTERVAL: ${GDINO_INFERENCE_INTERVAL:-}
       GDINO_MODEL_PATH: ${GDINO_MODEL_PATH:-}
       GRAPH_DB_PASSWORD: ${GRAPH_DB_PASSWORD:-password}
@@ -364,14 +364,14 @@ services:
       - CMD
       - sh
       - -c
-      - curl -f http://localhost:${BACKEND_PORT:-8100}/health/ready
+      - curl -f http://localhost:8100/health/ready
       timeout: 5s
     hostname: via-server
     image: ${VIA_IMAGE:-nvcr.io/nvidia/blueprint/vss-engine:2.3.0}
     ipc: host
     ports: &id006
-    - ${BACKEND_PORT:-8100}:${BACKEND_PORT:-8100}
-    - ${FRONTEND_PORT:-9100}:${FRONTEND_PORT:-9100}
+    - 8100:8100
+    - 9100:9100
     profiles:
     - local-deployment-dual-gpu
     restart: always
@@ -384,19 +384,8 @@ services:
         soft: -1
       stack: 67108864
     volumes: &id008
-    - ${ASSET_STORAGE_DIR:-/dummy}${ASSET_STORAGE_DIR:+:/tmp/assets}
-    - ${GUARDRAILS_CONFIG:-/dummy}${GUARDRAILS_CONFIG:+:/opt/nvidia/via/guardrails_config}
-    - ${GRAPH_RAG_PROMPT_CONFIG:-/dummy}${GRAPH_RAG_PROMPT_CONFIG:+:/opt/nvidia/via/warehouse_graph_rag_config.yaml}
-    - ${EXAMPLE_STREAMS_DIR:-/dummy}${EXAMPLE_STREAMS_DIR:+:/opt/nvidia/via/streams:ro}
-    - ${MILVUS_DATA_DIR:-/dummy}${MILVUS_DATA_DIR:+:/root/.milvus.io/milvus-server/2.3.5}
-    - ${MODEL_ROOT_DIR:-/dummy}${MODEL_ROOT_DIR:+:${MODEL_ROOT_DIR:-}}
-    - ${NGC_MODEL_CACHE:-via-ngc-model-cache}:/root/.via/ngc_model_cache
-    - ${TRT_ENGINE_PATH:-/dummy}${TRT_ENGINE_PATH:+:${TRT_ENGINE_PATH:-}}
-    - ${GSAM_MODEL_ROOT_DIR:-/dummy}${GSAM_MODEL_ROOT_DIR:+:${GSAM_MODEL_ROOT_DIR:-}}
-    - ${VIA_SRC_DIR:-/dummy}${VIA_SRC_DIR:+:/opt/nvidia/via:ro}
-    - ${VIA_LOG_DIR:-/dummy}${VIA_LOG_DIR:+:/tmp/via-logs}
+    - via-ngc-model-cache:/root/.via/ngc_model_cache
     - via-hf-cache:/tmp/huggingface
-    - ${CV_PIPELINE_TRACKER_CONFIG:-/dummy}${CV_PIPELINE_TRACKER_CONFIG:+:/opt/nvidia/via/config/default_tracker_config.yml}
   via-server-quad-gpu:
     configs:
     - source: server_config_quad_gpu
