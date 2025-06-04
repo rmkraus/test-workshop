@@ -107,10 +107,17 @@ configs:
 services:
   devx:
     environment:
+      DISABLE_GUARDRAILS: 'true'
+      MODEL_PATH: git:https://huggingface.co/Efficient-Large-Model/NVILA-15B
       NGC_API_KEY: ${NGC_API_KEY}
+      NVILA_VIDEO_MAX_TILES: '1'
+      VIA_IMAGE: nvcr.io/nvidia/blueprint/vss-engine:2.3.0
+      VLM_MODEL_TO_USE: nvila
     image: ghcr.io/rmkraus/test-workshop/devx:main
     ports:
     - 8888:8888
+    - 9001:9001
+    - 8001:8001
     volumes:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
