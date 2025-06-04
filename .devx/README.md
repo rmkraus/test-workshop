@@ -1,14 +1,14 @@
-# Developer Workshop
+# Visual Search and Summarization Developer Workshop
 
-<img src="_static/robots/blueprint.png" alt="VSS Robot Character" style="float:right; max-width:350px;margin:15px;" />
+<img src="_static/robots/video.png" alt="VSS Robot Character" style="float:right; max-width:350px;margin:15px;" />
 
-Docsify powered lab manuals.
+The [NVIDIA AI Blueprint for video search and summarization (VSS)](https://build.nvidia.com/nvidia/video-search-and-summarization) helps you build video analytics AI agents that let industrial operators communicate with their infrastructure through search and summarization of live or archived video sensor data. It integrates vision language models (VLMs), large language models (LLMs), and NVIDIA NIM™ to deliver a whole new level of collaboration.
 
-Link to Jupyter notebooks <a style="cursor: pointer;" onclick="openOrCreateFileInJupyterLab('NewNotebook.ipynb');"><i class="fas fa-flask"></i> NewNotebook.ipynb</a>.
+This workshop will help get you to get started integrating this blueprint in your enterprise. At the end of this workshop, you will go home with:
 
+ - access to NVIDIA cloud resources and documentation
+ - a running copy of the VSS blueprint
+ - turn-key, portable, developement environment
+ - a custom integrated application
 
-Open Python files too <a style="cursor: pointer;" onclick="openOrCreateFileInJupyterLab('test.py');"><i class="fa-brands fa-python"></i> test.py</a>.
-
-
-Link to lines inside of a code file:
- Look at the <a style="cursor: pointer;" onclick="goToLineAndSelect('test.py', '# upload the video');"># upload the video</a> block of code.
+ The entire lab can take anywhere from 1 to 2 hours to complete.
