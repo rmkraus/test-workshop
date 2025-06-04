@@ -3,7 +3,7 @@ name = "vss-workshop"
 description = "Visual Search and Summarization Workshop"
 version = "0.1.0"
 dependencies = [
-    "jupyterlab>=>=4.0.0",
+    "jupyterlab>=4.0.0",
     "jupyterlab-git>=0.44.0",
     "jupyter-app-launcher>=0.1.0",
 ]
