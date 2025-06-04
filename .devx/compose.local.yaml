@@ -1,0 +1,14 @@
+services:
+  devx:
+    build:
+      args:
+        USER_GID: '20'
+        USER_UID: '502'
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      NGC_API_KEY: ${NGC_API_KEY}
+    ports:
+    - 8888:8888
+    volumes:
+    - ../:/project:cached
