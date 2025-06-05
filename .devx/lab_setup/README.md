@@ -42,7 +42,7 @@ A few profiles have been made avilable depending on your hardware.
 To start the blueprint in this configuration, use the following command:
 
 ```bash
-docker compose --profile local-deployment-single-gpu up
+docker compose --profile local-deployment-single-gpu up -d
 ```
 
 Watch the status of the containers and wait for them to become healthy with this command:
@@ -56,7 +56,6 @@ watch docker compose --profile local-deployment-single-gpu ps
 |  | Model | Self-hosted | GPU ID |
 | --- | --- | --- | --- |
 | VLM | nvila-15b | 🟢 yes | 1 | 
-| LLM | meta/llama-3.1-8b-instruct | 🟢 yes | 2 |
 | Embedding | nvidia/llama-3.2-nv-embedqa-1b-v2 | 🟢 yes | 2 |
 | Reranking | nvidia/llama-3.2-nv-rerankqa-1b-v2 | 🟢 yes | 2 |
 | LLM | meta/llama-3.1-8b-instruct | 🟢 yes | 2 |
@@ -65,7 +64,7 @@ watch docker compose --profile local-deployment-single-gpu ps
 To start the blueprint in this configuration, use the following command:
 
 ```bash
-docker compose --profile local-deployment-dual-gpu up
+docker compose --profile local-deployment-dual-gpu up -d
 ```
 
 Watch the status of the containers and wait for them to become healthy with this command:
@@ -87,7 +86,7 @@ watch docker compose --profile local-deployment-dual-gpu ps
 To start the blueprint in this configuration, use the following command:
 
 ```bash
-docker compose --profile local-deployment-quad-gpu up
+docker compose --profile local-deployment-quad-gpu up -d
 ```
 
 Watch the status of the containers and wait for them to become healthy with this command:

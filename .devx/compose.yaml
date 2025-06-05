@@ -110,7 +110,7 @@ networks:
 services:
   devx:
     environment:
-      COMPOSE_PROJECT_NAME: devx
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-empty}
       DISABLE_GUARDRAILS: 'true'
       MODEL_PATH: git:https://huggingface.co/Efficient-Large-Model/NVILA-15B
       NGC_API_KEY: ${NGC_API_KEY}
@@ -123,8 +123,8 @@ services:
     - devx
     ports:
     - 8888:8888
-    - 9001:9001
-    - 8001:8001
+    - 9100:9100
+    - 8100:8100
     volumes:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
