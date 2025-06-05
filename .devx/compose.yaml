@@ -148,17 +148,17 @@ services:
     - 7687:7687
     restart: always
   init:
-    command: cd /host_root && mkdir -p /ephemeral/via-ngc-model-cache && chmod 777
-      /ephemeral/via-ngc-model-cache && mkdir -p /ephemeral/via-hf-cache && chmod
-      777 /ephemeral/via-hf-cache && mkdir -p /ephemeral/via-ngc-model-cache && chmod
-      777 /ephemeral/via-ngc-model-cache && mkdir -p /ephemeral/via-hf-cache && chmod
-      777 /ephemeral/via-hf-cache && mkdir -p /ephemeral/via-ngc-model-cache && chmod
-      777 /ephemeral/via-ngc-model-cache && mkdir -p /ephemeral/via-hf-cache && chmod
-      777 /ephemeral/via-hf-cache && mkdir -p /ephemeral/via-nim-cache && chmod 777
-      /ephemeral/via-nim-cache && mkdir -p /ephemeral/via-nim-cache && chmod 777 /ephemeral/via-nim-cache
-      && mkdir -p /ephemeral/via-nim-cache && chmod 777 /ephemeral/via-nim-cache &&
-      mkdir -p /ephemeral/via-nim-cache && chmod 777 /ephemeral/via-nim-cache && mkdir
-      -p /ephemeral/devx_home && chmod 777 /ephemeral/devx_home
+    command: mkdir -p /host_root/ephemeral/via-ngc-model-cache && chmod 777 /host_root/ephemeral/via-ngc-model-cache
+      && mkdir -p /host_root/ephemeral/via-hf-cache && chmod 777 /host_root/ephemeral/via-hf-cache
+      && mkdir -p /host_root/ephemeral/via-ngc-model-cache && chmod 777 /host_root/ephemeral/via-ngc-model-cache
+      && mkdir -p /host_root/ephemeral/via-hf-cache && chmod 777 /host_root/ephemeral/via-hf-cache
+      && mkdir -p /host_root/ephemeral/via-ngc-model-cache && chmod 777 /host_root/ephemeral/via-ngc-model-cache
+      && mkdir -p /host_root/ephemeral/via-hf-cache && chmod 777 /host_root/ephemeral/via-hf-cache
+      && mkdir -p /host_root/ephemeral/via-nim-cache && chmod 777 /host_root/ephemeral/via-nim-cache
+      && mkdir -p /host_root/ephemeral/via-nim-cache && chmod 777 /host_root/ephemeral/via-nim-cache
+      && mkdir -p /host_root/ephemeral/via-nim-cache && chmod 777 /host_root/ephemeral/via-nim-cache
+      && mkdir -p /host_root/ephemeral/via-nim-cache && chmod 777 /host_root/ephemeral/via-nim-cache
+      && mkdir -p /host_root/ephemeral/devx_home && chmod 777 /host_root/ephemeral/devx_home
     entrypoint:
     - bash
     - -c
