@@ -104,9 +104,13 @@ configs:
       \  endpoint: \"http://host.docker.internal:60000/via-alert-callback\"\n  llm:\n\
       \    model: \"meta/llama-3.1-70b-instruct\"\n    base_url: \"https://integrate.api.nvidia.com/v1\"\
       \n    max_tokens: 2048\n    temperature: 0.2\n    top_p: 0.7\n"
+networks:
+  devx:
+    driver: bridge
 services:
   devx:
     environment:
+      COMPOSE_PROJECT_NAME: devx
       DISABLE_GUARDRAILS: 'true'
       MODEL_PATH: git:https://huggingface.co/Efficient-Large-Model/NVILA-15B
       NGC_API_KEY: ${NGC_API_KEY}
@@ -114,6 +118,9 @@ services:
       VIA_IMAGE: nvcr.io/nvidia/blueprint/vss-engine:2.3.0
       VLM_MODEL_TO_USE: nvila
     image: ghcr.io/rmkraus/test-workshop/devx:main
+    ipc: host
+    networks:
+    - devx
     ports:
     - 8888:8888
     - 9001:9001
@@ -121,6 +128,7 @@ services:
     volumes:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
+    - devx_home:/home/nvidia
   graph-db:
     environment:
       NEO4J_AUTH: ${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}
@@ -133,6 +141,8 @@ services:
       timeout: 10s
     hostname: graph-db
     image: neo4j:5.26.4
+    networks:
+    - devx
     ports:
     - 7474:7474
     - 7687:7687
@@ -168,6 +178,8 @@ services:
       timeout: 10s
     hostname: llama-3-1-70b-instruct
     image: nvcr.io/nim/meta/llama-3.1-70b-instruct:1.3.3
+    networks:
+    - devx
     ports:
     - 8007:8000
     profiles:
@@ -205,6 +217,8 @@ services:
       timeout: 10s
     hostname: llama-3-1-8b-instruct
     image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.3.3
+    networks:
+    - devx
     ports:
     - 8007:8000
     profiles:
@@ -240,6 +254,8 @@ services:
       timeout: 10s
     hostname: llama-3-2-nv-embedqa
     image: nvcr.io/nim/nvidia/llama-3.2-nv-embedqa-1b-v2:1.3.0
+    networks:
+    - devx
     ports:
     - 8006:8000
     profiles:
@@ -276,6 +292,8 @@ services:
       timeout: 10s
     hostname: llama-3.2-nv-rerankqa
     image: nvcr.io/nim/nvidia/llama-3.2-nv-rerankqa-1b-v2:1.3.0
+    networks:
+    - devx
     ports:
     - 8005:8000
     profiles:
@@ -374,7 +392,9 @@ services:
     hostname: via-server
     image: ${VIA_IMAGE:-nvcr.io/nvidia/blueprint/vss-engine:2.3.0}
     ipc: host
-    ports: &id006
+    networks: &id006
+    - devx
+    ports: &id007
     - 8100:8100
     - 9100:9100
     profiles:
@@ -383,12 +403,12 @@ services:
     runtime: nvidia
     stdin_open: true
     tty: true
-    ulimits: &id007
+    ulimits: &id008
       memlock:
         hard: -1
         soft: -1
       stack: 67108864
-    volumes: &id008
+    volumes: &id009
     - via-ngc-model-cache:/root/.via/ngc_model_cache
     - via-hf-cache:/tmp/huggingface
   via-server-quad-gpu:
@@ -403,15 +423,16 @@ services:
     hostname: via-server
     image: ${VIA_IMAGE:-nvcr.io/nvidia/blueprint/vss-engine:2.3.0}
     ipc: host
-    ports: *id006
+    networks: *id006
+    ports: *id007
     profiles:
     - local-deployment-quad-gpu
     restart: always
     runtime: nvidia
     stdin_open: true
     tty: true
-    ulimits: *id007
-    volumes: *id008
+    ulimits: *id008
+    volumes: *id009
   via-server-single-gpu:
     configs:
     - source: server_config_single_gpu
@@ -424,16 +445,18 @@ services:
     hostname: via-server
     image: ${VIA_IMAGE:-nvcr.io/nvidia/blueprint/vss-engine:2.3.0}
     ipc: host
-    ports: *id006
+    networks: *id006
+    ports: *id007
     profiles:
     - local-deployment-single-gpu
     restart: always
     runtime: nvidia
     stdin_open: true
     tty: true
-    ulimits: *id007
-    volumes: *id008
+    ulimits: *id008
+    volumes: *id009
 volumes:
+  devx_home: null
   via-hf-cache: null
   via-ngc-model-cache: null
   via-nim-cache: null

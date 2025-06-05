@@ -185,3 +185,21 @@ async function goToLineAndSelect(filename, searchString) {
 
   console.warn(`"${searchString}" not found.`);
 }
+
+
+async function openNewTerminal() {
+  const app = window.parent.jupyterapp;
+  if (!app) {
+    console.error('JupyterLab app is not available on window.jupyterapp');
+    return;
+  }
+
+  try {
+    const widget = await app.commands.execute('terminal:create-new');
+    console.log('New terminal opened successfully', widget);
+    return widget;
+  } catch (error) {
+    console.error('Failed to open new terminal:', error);
+  }
+}
+

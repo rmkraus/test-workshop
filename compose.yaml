@@ -267,6 +267,8 @@ services:
     tty: true
     extra_hosts:
       host.docker.internal: host-gateway
+    networks:
+      - devx
     profiles: ["local-deployment-single-gpu"]
 
   via-server-dual-gpu:
@@ -305,6 +307,8 @@ services:
               capabilities: [gpu]
     extra_hosts:
       host.docker.internal: host-gateway
+    networks:
+      - devx
     profiles: ["local-deployment-dual-gpu"]
     healthcheck:
       test: ["CMD", "python3", "-c", "import http.client; conn = http.client.HTTPConnection('localhost', 8000); conn.request('GET', '/v1/health/ready'); response = conn.getresponse(); exit(0 if response.status == 200 else 1)"]
@@ -334,6 +338,8 @@ services:
               capabilities: [gpu]
     extra_hosts:
       host.docker.internal: host-gateway
+    networks:
+      - devx
     profiles: ["local-deployment-quad-gpu"]
     healthcheck:
       test: ["CMD", "python3", "-c", "import http.client; conn = http.client.HTTPConnection('localhost', 8000); conn.request('GET', '/v1/health/ready'); response = conn.getresponse(); exit(0 if response.status == 200 else 1)"]
@@ -364,6 +370,8 @@ services:
               capabilities: [gpu]
     extra_hosts:
       host.docker.internal: host-gateway
+    networks:
+      - devx
     profiles: ["local-deployment-dual-gpu", "local-deployment-quad-gpu"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/health/ready"]
@@ -394,6 +402,8 @@ services:
               capabilities: [gpu]
     extra_hosts:
       host.docker.internal: host-gateway
+    networks:
+      - devx
     profiles: ["local-deployment-dual-gpu", "local-deployment-quad-gpu"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/health/ready"]
@@ -413,6 +423,8 @@ services:
       NEO4J_AUTH: "${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}"
       NEO4J_PLUGINS: '["apoc"]'
     image: neo4j:5.26.4
+    networks:
+      - devx
     healthcheck:
       test: wget http://localhost:7474 || exit 1
       interval: 1s
@@ -424,5 +436,9 @@ volumes:
   via-hf-cache:
   via-ngc-model-cache:
   via-nim-cache:
+
+networks:
+  devx:
+    driver: bridge
 
 

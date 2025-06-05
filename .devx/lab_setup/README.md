@@ -4,85 +4,99 @@
 
 
 A Docker Compose file has been provided that will start the blueprint services.
+All of these steps will be done in the <button onclick="openNewTerminal();"><i class="fas fa-terminal"></i> Terminal</button>.
 
 ## Login to the NGC Registry
 
-Before we get started, we need to login to the NGC registries using our API Key.
+1. [Generate a new API Key](https://build.nvidia.com/settings/api-keys), if you don't already have one. This will begin with `nvapi-.....`.
 
-Open a new terminal window and login with the following command:
+1. Log into NVIDIA's NGC Registry. Use this command and enter your API Key when prompted.
 
+    ```bash
+    docker login -u '$oauthtoken' nvcr.io
+    ```
 
+1. Save your API Key in an environment variable.
 
+    ```bash
+    export NGC_API_KEY="nvapi-........"
+    ```
 
-# OLD BUSTED DOCS
+## Start the blueprint services
 
-
-This NVIDIA Workbench project has been configured to manage the VSS Blueprint microservices.
-
-
-## Configure Workbench Project
-
-There are two profiles available for this project.
+A few profiles have been made avilable depending on your hardware.
 
 <!-- tabs:start -->
 
-### **Dual GPUs (40GB of RAM or larger)**
+### **Single GPU - min 40GB**
 
-Open your AI Workbench window and ensure you are seeing the video-search-and-summarization project. In the project, open `Environment` → `Compose`.
+|  | Model | Self-hosted | GPU ID |
+| --- | --- | --- | -- |
+| VLM | nvila-15b | 🟢 yes | 1 |
+| Embedding | nvidia/llama-3.2-nv-embedqa-1b-v2 | 🔴 no | |
+| Reranking | nvidia/llama-3.2-nv-rerankqa-1b-v2" | 🔴 no |  
+| LLM | meta/llama-3.1-70b-instruct | 🔴 no | |
 
-This window is your central control panel for your development copy of the VSS Blueprint. In the `Profile` drop down, select `local-deployment-dual-gpu`.
+To start the blueprint in this configuration, use the following command:
 
-![Workbench Compose View](compose.png)
+```bash
+docker compose --profile local-deployment-single-gpu up
+```
+
+Watch the status of the containers and wait for them to become healthy with this command:
+
+```bash
+watch docker compose --profile local-deployment-single-gpu ps 
+```
+
+### **Dual GPUs - min 40GB**
+
+|  | Model | Self-hosted | GPU ID |
+| --- | --- | --- | --- |
+| VLM | nvila-15b | 🟢 yes | 1 | 
+| LLM | meta/llama-3.1-8b-instruct | 🟢 yes | 2 |
+| Embedding | nvidia/llama-3.2-nv-embedqa-1b-v2 | 🟢 yes | 2 |
+| Reranking | nvidia/llama-3.2-nv-rerankqa-1b-v2 | 🟢 yes | 2 |
+| LLM | meta/llama-3.1-8b-instruct | 🟢 yes | 2 |
 
 
-### **3x GPU (80GB of RAM or larger)**
+To start the blueprint in this configuration, use the following command:
 
-1. Open your AI Workbench window and ensure you are seeing the video-search-and-summarization project.
-    In the project, open `Environment` → `Compose`.
+```bash
+docker compose --profile local-deployment-dual-gpu up
+```
 
-   This window is your central control panel for your development copy of the VSS Blueprint. In the `Profile` drop down, select `local-deployment-multi-gpu`.
+Watch the status of the containers and wait for them to become healthy with this command:
 
-    ```
-    TODO insert compose view screenshot
-    ```
+```bash
+watch docker compose --profile local-deployment-dual-gpu ps 
+```
 
-1.  Now, go to `Environment` → `Project Container`.
-    Then scroll down to the `Variables` section.
-    This is the configuration for your local copy of the VSS blueprint.
+### **Quad GPUs - min 80GB**
 
-    Make the following changes:
+|  | Model | Self-hosted | GPU ID |
+| --- | --- | --- | --- |
+| VLM | nvila-15b | 🟢 yes | 1 | 
+| Embedding | nvidia/llama-3.2-nv-embedqa-1b-v2 | 🟢 yes | 2 |
+| Reranking | nvidia/llama-3.2-nv-rerankqa-1b-v2 | 🟢 yes | 2 |
+| LLM | meta/llama-3.1-70b-instruct | 🟢 yes | 3 |
 
-    ```
-    TODO document which env variables to change
 
-    TODO show env vars view screenshot
-    ```
+To start the blueprint in this configuration, use the following command:
+
+```bash
+docker compose --profile local-deployment-quad-gpu up
+```
+
+Watch the status of the containers and wait for them to become healthy with this command:
+
+```bash
+watch docker compose --profile local-deployment-quad-gpu ps 
+```
 
 <!-- tabs:end -->
-
-## Start The Services
-
-You can control your blueprint instance in the AI Workbench UI.
-The fastest way is on the `Project Dashboard`.
-
-In the `Compose` card, click the `Start` button.
-Workbench will now orchestrate the various services that are needed for the blueprint.
-
-Once the status of these containers is `RUNNING`, your blueprint will be ready to go.
-
-```
-TODO setup health checks in compose so these indicators will be more accurate
-
-For now, wait for the log file to slow down. Then try hitting the frontend at HOST:9100
-```
 
 ## Access the Blueprint Interface
 
 Now you are up and running!
-Check out the blueprint demo interface by navigating to http://HOSTNAME:9100.
-
-```
-TODO enable proxy support in the gradio app
-
-This frontend will be proxied through workbench so you dont have to worry about networking issues. The link in the docs will also be directly to the docs, without placeholders.
-```
+Check out the blueprint demo interface by navigating to http://{{ hostname }}:9100.
