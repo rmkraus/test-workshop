@@ -27,7 +27,7 @@ This excercise will focus on tuning the video chunking. The following table summ
 
 ## Customize off-the-shelf VSS
 
-Open <a style="cursor: pointer;" onclick="openOrCreateFileInJupyterLab('labs/Custom_VSS.ipynb');"><i class="fas fa-flask"></i> labs/Intro_To_VSS.ipynb</a> to get started.
+Open <button onclick="openOrCreateFileInJupyterLab('labs/Custom_VSS.ipynb');"><i class="fas fa-flask"></i> labs/Custom_VSS.ipynb</button> to get started.
 
 ## Wrap up
 

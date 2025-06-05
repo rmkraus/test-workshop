@@ -19,7 +19,7 @@ It is also vital that safety related issues be escalated to the highest priority
 
 <img src="_static/robots/wrench.png" alt="VSS Robot Character" style="float:left; max-width:200px;margin:15px;" />
 
-Open <a style="cursor: pointer;" onclick="openOrCreateFileInJupyterLab('labs/bridge_inspector.py');"><i class="fa-brands fa-python"></i> labs/bridge_inspector.py</a> and we can get started by checking out the initial code.
+Open <button onclick="openOrCreateFileInJupyterLab('labs/bridge_inspector.py');"><i class="fa-brands fa-python"></i> labs/bridge_inspector.py</button> and we can get started by checking out the initial code.
 
 This file already has a handful of functions templated. We will work on filling these in.
 
@@ -37,32 +37,32 @@ The reamaining functions will be called by the `main` function to accomplish thi
 
 ### Query Model ID
 
-Inside of the `main` function, at <a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', '# get the first model name');"># get the first model name</a>, we need to call the <a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def lookup_model_id');">lookup_model_id</a> funtion. The function also needs to be populated.
+Inside of the `main` function, at <button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# get the first model name');"># get the first model name</button>, we need to call the <button onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def lookup_model_id');">lookup_model_id</button> funtion. The function also needs to be populated.
 
 Reference the previous labs to complete this function.
 
 ### Upload the video file
 
 At this point, we will loop over all the video files specified by the user at runtime. We need to call the function
-<a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def upload_video_to_vss');">upload_video_to_vss</a>
+<button onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def upload_video_to_vss');">upload_video_to_vss</button>
 function in the
-<a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', '# upload the video');"># upload the video</a> block of code.
+<button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# upload the video');"># upload the video</button> block of code.
 
 Remember this is done using a `POST` request and uploading the bytes.
 
 ### Video Summarization
 
-<a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def summarize_video');">summarize_video</a> should use the uploaded video ID to request a summary of the video. In the last excercise, we made some effective prompts that will help here.
+<button onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def summarize_video');">summarize_video</button> should use the uploaded video ID to request a summary of the video. In the last excercise, we made some effective prompts that will help here.
 
-This function should be invoked by <a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', '# summarize the video');"># summarize the video</a> block of code.
+This function should be invoked by <button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# summarize the video');"># summarize the video</button> block of code.
 
 Make sure you enable chat!
 
 ### Chat with your video
 
-Use the `Chat` class from before (it is already imported from `helpers`), and connect to the VSS Chat server. In this example, the VSS URL is provided at runtime. Put this code in the <a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', '# summarize the video');"># summarize the video</a> block.
+Use the `Chat` class from before (it is already imported from `helpers`), and connect to the VSS Chat server. In this example, the VSS URL is provided at runtime. Put this code in the <button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# summarize the video');"># summarize the video</button> block.
 
-<a style="cursor: pointer;" onclick="goToLineAndSelect('labs/bridge_inspector.py', '# ask follow up questions');"># ask follow up questions</a> should use the chat API to request additional information. We need to ask the chat model about maintenance escalations, priority of repairs, a report title, and a list of any emergency repairs that are needed.
+<button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# ask follow up questions');"># ask follow up questions</button> should use the chat API to request additional information. We need to ask the chat model about maintenance escalations, priority of repairs, a report title, and a list of any emergency repairs that are needed.
 
 We haven't made prompts for this yet, but try it out yourself.
 
