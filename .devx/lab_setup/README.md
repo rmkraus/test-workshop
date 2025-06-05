@@ -28,6 +28,10 @@ All of these steps will be done in the <button onclick="openNewTerminal();"><i c
 
 A few profiles have been made avilable depending on your hardware.
 
+{{#isBrev}}
+> **Note:** Looks like you are running in Brev! We recommend using the Dual GPU profile for optimal performance.
+{{/isBrev}}
+
 <!-- tabs:start -->
 
 ### **Single GPU - min 40GB**
