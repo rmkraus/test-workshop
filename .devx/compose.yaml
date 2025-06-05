@@ -109,6 +109,8 @@ networks:
     driver: bridge
 services:
   devx:
+    depends_on:
+    - init
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-devx}
       DISABLE_GUARDRAILS: 'true'
@@ -145,6 +147,25 @@ services:
     - 7474:7474
     - 7687:7687
     restart: always
+  init:
+    command: "if mount | grep -q '/mnt/docker-volumes'; then\n  echo \"[init-storage]\
+      \ Already mounted, skipping.\"\nelse\n  echo \"[init-storage] Preparing /dev/sdb...\"\
+      \n  blkid /dev/sdb || mkfs.ext4 -F /dev/sdb\n  mkdir -p /mnt/docker-volumes\n\
+      \  grep -q '/dev/sdb /mnt/docker-volumes' /etc/fstab || \\\n    echo '/dev/sdb\
+      \ /mnt/docker-volumes ext4 defaults 0 2' >> /etc/fstab\n  mount /mnt/docker-volumes\n\
+      \  echo \"[init-storage] Mounted and ready.\"\nfi"
+    entrypoint:
+    - bash
+    - -c
+    image: ubuntu
+    networks:
+    - devx
+    privileged: true
+    restart: 'no'
+    volumes:
+    - /dev:/dev
+    - /mnt/docker-volumes:/mnt/docker-volumes
+    - /etc/fstab:/etc/fstab:rw
   llama-3-1-70b-instruct:
     deploy:
       resources:
