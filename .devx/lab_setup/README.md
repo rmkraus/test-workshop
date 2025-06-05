@@ -2,6 +2,21 @@
 
 <img src="_static/robots/startup.png" alt="VSS Robot Character" style="float:right; max-width:350px;margin:15px;" />
 
+
+A Docker Compose file has been provided that will start the blueprint services.
+
+## Login to the NGC Registry
+
+Before we get started, we need to login to the NGC registries using our API Key.
+
+Open a new terminal window and login with the following command:
+
+
+
+
+# OLD BUSTED DOCS
+
+
 This NVIDIA Workbench project has been configured to manage the VSS Blueprint microservices.
 
 
