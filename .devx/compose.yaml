@@ -109,6 +109,8 @@ networks:
     driver: bridge
 services:
   devx:
+    depends_on:
+    - init
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-devx}
       DISABLE_GUARDRAILS: 'true'
@@ -145,6 +147,28 @@ services:
     - 7474:7474
     - 7687:7687
     restart: always
+  init:
+    command: cd /host_root && mkdir -p /ephemeral/via-ngc-model-cache && chmod 777
+      /ephemeral/via-ngc-model-cache && mkdir -p /ephemeral/via-hf-cache && chmod
+      777 /ephemeral/via-hf-cache && mkdir -p /ephemeral/via-ngc-model-cache && chmod
+      777 /ephemeral/via-ngc-model-cache && mkdir -p /ephemeral/via-hf-cache && chmod
+      777 /ephemeral/via-hf-cache && mkdir -p /ephemeral/via-ngc-model-cache && chmod
+      777 /ephemeral/via-ngc-model-cache && mkdir -p /ephemeral/via-hf-cache && chmod
+      777 /ephemeral/via-hf-cache && mkdir -p /ephemeral/via-nim-cache && chmod 777
+      /ephemeral/via-nim-cache && mkdir -p /ephemeral/via-nim-cache && chmod 777 /ephemeral/via-nim-cache
+      && mkdir -p /ephemeral/via-nim-cache && chmod 777 /ephemeral/via-nim-cache &&
+      mkdir -p /ephemeral/via-nim-cache && chmod 777 /ephemeral/via-nim-cache && mkdir
+      -p /ephemeral/devx_home && chmod 777 /ephemeral/devx_home
+    entrypoint:
+    - bash
+    - -c
+    image: ubuntu
+    networks:
+    - devx
+    privileged: true
+    restart: 'no'
+    volumes:
+    - /:/host_root
   llama-3-1-70b-instruct:
     deploy:
       resources:
