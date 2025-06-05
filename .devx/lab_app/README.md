@@ -15,6 +15,8 @@ Drone pilots will submit inspection footage which will then be triaged by our AI
 It is critical that findings from these videos get routed to the correct department.
 It is also vital that safety related issues be escalated to the highest priority.
 
+<!--fold:break -->
+
 ## Create your application
 
 <img src="_static/robots/wrench.png" alt="VSS Robot Character" style="float:left; max-width:200px;margin:15px;" />
@@ -35,11 +37,15 @@ This function has the following structure:
 
 The reamaining functions will be called by the `main` function to accomplish this task.
 
+<!--fold:break -->
+
 ### Query Model ID
 
 Inside of the `main` function, at <button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# get the first model name');"># get the first model name</button>, we need to call the <button onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def lookup_model_id');">lookup_model_id</button> funtion. The function also needs to be populated.
 
 Reference the previous labs to complete this function.
+
+<!--fold:break -->
 
 ### Upload the video file
 
@@ -50,6 +56,8 @@ function in the
 
 Remember this is done using a `POST` request and uploading the bytes.
 
+<!--fold:break -->
+
 ### Video Summarization
 
 <button onclick="goToLineAndSelect('labs/bridge_inspector.py', 'def summarize_video');">summarize_video</button> should use the uploaded video ID to request a summary of the video. In the last excercise, we made some effective prompts that will help here.
@@ -57,6 +65,8 @@ Remember this is done using a `POST` request and uploading the bytes.
 This function should be invoked by <button onclick="goToLineAndSelect('labs/bridge_inspector.py', '# summarize the video');"># summarize the video</button> block of code.
 
 Make sure you enable chat!
+
+<!--fold:break -->
 
 ### Chat with your video
 
@@ -78,6 +88,8 @@ emergencies = chat_client.query("Does this the bridge require immediate structur
 
 </details>
 
+<!--fold:break -->
+
 ## Testing you application
 
 To test your application, open a Terminal in Jupyter and navigate to `labs/`.
@@ -93,6 +105,8 @@ Run your application from the command line:
 ```
 
 If everything goes to plan, this will write a full markdown report to the shell.
+
+<!--fold:break -->
 
 ## 🦾 Congratulations on your new agent
 

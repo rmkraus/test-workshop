@@ -22,6 +22,8 @@ All of these steps will be done in the <button onclick="openNewTerminal();"><i c
     export NGC_API_KEY="nvapi-........"
     ```
 
+<!--fold:break -->
+
 ## Start the blueprint services
 
 A few profiles have been made avilable depending on your hardware.
@@ -95,6 +97,8 @@ watch docker compose --profile local-deployment-quad-gpu ps
 ```
 
 <!-- tabs:end -->
+
+<!--fold:break -->
 
 ## Access the Blueprint Interface
 
