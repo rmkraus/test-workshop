@@ -99,4 +99,10 @@ watch docker compose --profile local-deployment-quad-gpu ps
 ## Access the Blueprint Interface
 
 Now you are up and running!
+
+{{#isBrev}}
 Check out the blueprint demo interface by navigating to http://{{ hostname }}:9100.
+{{/isBrev}}
+{{^isBrev}}
+Check out the blueprint demo interface by navigating to https://frontend0-{{ brevId }}.brevlab.com.
+{{/isBrev}}

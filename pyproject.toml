@@ -13,6 +13,6 @@ instance_type = "l40s-48gb.1x"
 workspace_group_id = "crusoe-brev-wg"
 ports = [
     { name = "jupyter", port = 8888 },
-    { name = "frontend", port = 9001 },
-    { name = "api", port = 8001 }
+    { name = "frontend", port = 9100 },
+    { name = "api", port = 8100 }
 ]
