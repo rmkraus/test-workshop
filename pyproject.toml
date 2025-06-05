@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [tool.brev]
-instance_type = "l40s-48gb.1x"
+instance_type = "l40s-48gb.2x"
 workspace_group_id = "crusoe-brev-wg"
 ports = [
     { name = "jupyter", port = 8888 },

@@ -1,7 +1,7 @@
 # ref: https://jupyter-app-launcher.readthedocs.io/en/stable/usage.html
 
-- title: Simple Workshop
-  description: Create a workshop.
+- title: VSS Workshop
+  description: Video search and summarization.
   source: http://localhost:$PORT/
   cwd: "/project/.devx"
   type: local-server
