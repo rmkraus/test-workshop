@@ -110,6 +110,6 @@ If everything goes to plan, this will write a full markdown report to the shell.
 
 ## 🦾 Congratulations on your new agent
 
-<img src="_static/robots/tpose.png" alt="VSS Robot Character" style="float:right; max-width:350px;margin:15px;" />
+<img src="_static/robots/blueprint-blend.png" alt="VSS Robot Character" style="float:right; max-width:350px;margin:15px;" />
 
 You now have a fully fleged Video Search and Summarization agent from the NVIDIA AI Blueprint. This can be further integrated into your bussiness processes to unlock domain knowledge from video.

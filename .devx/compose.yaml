@@ -104,27 +104,31 @@ configs:
       \  endpoint: \"http://host.docker.internal:60000/via-alert-callback\"\n  llm:\n\
       \    model: \"meta/llama-3.1-70b-instruct\"\n    base_url: \"https://integrate.api.nvidia.com/v1\"\
       \n    max_tokens: 2048\n    temperature: 0.2\n    top_p: 0.7\n"
+graph-db:
+  environment:
+    NEO4J_AUTH: ${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}
+    NEO4J_PLUGINS: '["apoc"]'
+  healthcheck:
+    interval: 1s
+    retries: 20
+    start_period: 3s
+    test: wget http://localhost:7474 || exit 1
+    timeout: 10s
+  hostname: graph-db
+  image: neo4j:5.26.4
+  networks:
+  - devx
+  ports:
+  - 7474:7474
+  - 7687:7687
+  restart: always
 networks:
   devx:
     driver: bridge
 services:
-  data-watcher:
-    command:
-    - sh
-    - -c
-    - "echo \"Starting directory permission watcher for /ephemeral...\" &&\nwhile\
-      \ true; do\n  find \"/ephemeral\" -type d ! -perm 777 -exec chmod 777 {} \\\
-      ; -print 2>/dev/null || true\n  sleep 10\ndone"
-    environment:
-    - DATA_DIR=/ephemeral
-    image: alpine
-    restart: always
-    volumes:
-    - /ephemeral:/ephemeral
   devx:
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-devx}
-      DATA_DIR: /ephemeral
       DISABLE_GUARDRAILS: 'true'
       MODEL_PATH: git:https://huggingface.co/Efficient-Large-Model/NVILA-15B
       NGC_API_KEY: ${NGC_API_KEY}
@@ -142,24 +146,6 @@ services:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
     - devx_home:/home/nvidia
-  graph-db:
-    environment:
-      NEO4J_AUTH: ${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}
-      NEO4J_PLUGINS: '["apoc"]'
-    healthcheck:
-      interval: 1s
-      retries: 20
-      start_period: 3s
-      test: wget http://localhost:7474 || exit 1
-      timeout: 10s
-    hostname: graph-db
-    image: neo4j:5.26.4
-    networks:
-    - devx
-    ports:
-    - 7474:7474
-    - 7687:7687
-    restart: always
   llama-3-1-70b-instruct:
     deploy:
       resources:
@@ -197,9 +183,10 @@ services:
     - 8007:8000
     profiles:
     - local-deployment-quad-gpu
+    restart: always
     shm_size: 16gb
     volumes:
-    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
+    - via-nim-cache:/opt/nim/.cache
   llama-3-1-8b-instruct:
     deploy:
       resources:
@@ -236,9 +223,10 @@ services:
     - 8007:8000
     profiles:
     - local-deployment-dual-gpu
+    restart: always
     shm_size: 16gb
     volumes:
-    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
+    - via-nim-cache:/opt/nim/.cache
   llama-3-2-nv-embedqa:
     deploy:
       resources:
@@ -274,9 +262,10 @@ services:
     profiles:
     - local-deployment-dual-gpu
     - local-deployment-quad-gpu
+    restart: always
     shm_size: 16gb
     volumes:
-    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
+    - via-nim-cache:/opt/nim/.cache
   llama-3.2-nv-rerankqa:
     deploy:
       resources:
@@ -312,9 +301,10 @@ services:
     profiles:
     - local-deployment-dual-gpu
     - local-deployment-quad-gpu
+    restart: always
     shm_size: 16gb
     volumes:
-    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
+    - via-nim-cache:/opt/nim/.cache
   via-server-dual-gpu:
     configs:
     - source: server_config_dual_gpu
@@ -422,8 +412,8 @@ services:
         soft: -1
       stack: 67108864
     volumes: &id009
-    - ${DATA_DIR:+${DATA_DIR}/}via-ngc-model-cache:/root/.via/ngc_model_cache
-    - ${DATA_DIR:+${DATA_DIR}/}via-hf-cache:/tmp/huggingface
+    - via-ngc-model-cache:/root/.via/ngc_model_cache
+    - via-hf-cache:/tmp/huggingface
   via-server-quad-gpu:
     configs:
     - source: server_config_quad_gpu
