@@ -108,11 +108,24 @@ networks:
   devx:
     driver: bridge
 services:
+  data-watcher:
+    command:
+    - sh
+    - -c
+    - "apk add --no-cache inotify-tools &&\necho \"Watching /ephemeral for new directories...\"\
+      \ &&\nwhile true; do\n  inotifywait -m -e create --format \"%w%f\" \"/ephemeral\"\
+      \ | while read path; do\n    if [ -d \"$path\" ]; then\n      chmod 777 \"$path\"\
+      \n      echo \"chmod 777 $path\"\n    fi\n  done\ndone"
+    environment:
+    - DATA_DIR=/ephemeral
+    image: alpine
+    restart: always
+    volumes:
+    - /ephemeral:/ephemeral
   devx:
-    depends_on:
-    - init
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-devx}
+      DATA_DIR: /ephemeral
       DISABLE_GUARDRAILS: 'true'
       MODEL_PATH: git:https://huggingface.co/Efficient-Large-Model/NVILA-15B
       NGC_API_KEY: ${NGC_API_KEY}
@@ -128,7 +141,7 @@ services:
     volumes:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
-    - /ephemeral/devx_home:/home/nvidia
+    - devx_home:/home/nvidia
   graph-db:
     environment:
       NEO4J_AUTH: ${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}
@@ -147,22 +160,6 @@ services:
     - 7474:7474
     - 7687:7687
     restart: always
-  init:
-    command:
-    - mkdir -p /host_root/ephemeral/via-ngc-model-cache && chmod 777 /host_root/ephemeral/via-ngc-model-cache
-      && mkdir -p /host_root/ephemeral/via-nim-cache && chmod 777 /host_root/ephemeral/via-nim-cache
-      && mkdir -p /host_root/ephemeral/devx_home && chmod 777 /host_root/ephemeral/devx_home
-      && mkdir -p /host_root/ephemeral/via-hf-cache && chmod 777 /host_root/ephemeral/via-hf-cache
-    entrypoint:
-    - bash
-    - -c
-    image: ubuntu
-    networks:
-    - devx
-    privileged: true
-    restart: 'no'
-    volumes:
-    - /:/host_root
   llama-3-1-70b-instruct:
     deploy:
       resources:
@@ -202,7 +199,7 @@ services:
     - local-deployment-quad-gpu
     shm_size: 16gb
     volumes:
-    - /ephemeral/via-nim-cache:/opt/nim/.cache
+    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
   llama-3-1-8b-instruct:
     deploy:
       resources:
@@ -241,7 +238,7 @@ services:
     - local-deployment-dual-gpu
     shm_size: 16gb
     volumes:
-    - /ephemeral/via-nim-cache:/opt/nim/.cache
+    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
   llama-3-2-nv-embedqa:
     deploy:
       resources:
@@ -279,7 +276,7 @@ services:
     - local-deployment-quad-gpu
     shm_size: 16gb
     volumes:
-    - /ephemeral/via-nim-cache:/opt/nim/.cache
+    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
   llama-3.2-nv-rerankqa:
     deploy:
       resources:
@@ -317,7 +314,7 @@ services:
     - local-deployment-quad-gpu
     shm_size: 16gb
     volumes:
-    - /ephemeral/via-nim-cache:/opt/nim/.cache
+    - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
   via-server-dual-gpu:
     configs:
     - source: server_config_dual_gpu
@@ -424,9 +421,9 @@ services:
         hard: -1
         soft: -1
       stack: 67108864
-    volumes:
-    - /ephemeral/via-ngc-model-cache:/root/.via/ngc_model_cache
-    - /ephemeral/via-hf-cache:/tmp/huggingface
+    volumes: &id009
+    - ${DATA_DIR:+${DATA_DIR}/}via-ngc-model-cache:/root/.via/ngc_model_cache
+    - ${DATA_DIR:+${DATA_DIR}/}via-hf-cache:/tmp/huggingface
   via-server-quad-gpu:
     configs:
     - source: server_config_quad_gpu
@@ -448,9 +445,7 @@ services:
     stdin_open: true
     tty: true
     ulimits: *id008
-    volumes:
-    - /ephemeral/via-ngc-model-cache:/root/.via/ngc_model_cache
-    - /ephemeral/via-hf-cache:/tmp/huggingface
+    volumes: *id009
   via-server-single-gpu:
     configs:
     - source: server_config_single_gpu
@@ -472,7 +467,9 @@ services:
     stdin_open: true
     tty: true
     ulimits: *id008
-    volumes:
-    - /ephemeral/via-ngc-model-cache:/root/.via/ngc_model_cache
-    - /ephemeral/via-hf-cache:/tmp/huggingface
-volumes: {}
+    volumes: *id009
+volumes:
+  devx_home: null
+  via-hf-cache: null
+  via-ngc-model-cache: null
+  via-nim-cache: null

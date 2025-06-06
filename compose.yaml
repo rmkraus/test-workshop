@@ -193,8 +193,8 @@ services:
       - source: server_config_single_gpu
         target: /opt/nvidia/via/default_config.yaml
     volumes:
-      - via-ngc-model-cache:/root/.via/ngc_model_cache
-      - via-hf-cache:/tmp/huggingface
+      - ${DATA_DIR:+${DATA_DIR}/}via-ngc-model-cache:/root/.via/ngc_model_cache
+      - ${DATA_DIR:+${DATA_DIR}/}via-hf-cache:/tmp/huggingface
     environment:
       GRAPH_RAG_PROMPT_CONFIG: "${GRAPH_RAG_PROMPT_CONFIG:-}"
       AZURE_OPENAI_API_KEY: "${AZURE_OPENAI_API_KEY:-}"
@@ -297,7 +297,7 @@ services:
       - NIM_LOW_MEMORY_MODE=1
       - NIM_RELAX_MEM_CONSTRAINTS=1
     volumes:
-      - via-nim-cache:/opt/nim/.cache
+      - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
     deploy:
       resources:
         reservations:
@@ -328,7 +328,7 @@ services:
       - NIM_LOW_MEMORY_MODE=1
       - NIM_RELAX_MEM_CONSTRAINTS=1
     volumes:
-      - via-nim-cache:/opt/nim/.cache
+      - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
     deploy:
       resources:
         reservations:
@@ -360,7 +360,7 @@ services:
       - NIM_SERVER_PORT=8000
       - NIM_MODEL_PROFILE=f7391ddbcb95b2406853526b8e489fedf20083a2420563ca3e65358ff417b10f
     volumes:
-      - via-nim-cache:/opt/nim/.cache
+      - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
     deploy:
       resources:
         reservations:
@@ -392,7 +392,7 @@ services:
       - NIM_SERVER_PORT=8000
       - NIM_MODEL_PROFILE=f7391ddbcb95b2406853526b8e489fedf20083a2420563ca3e65358ff417b10f
     volumes:
-      - via-nim-cache:/opt/nim/.cache
+      - ${DATA_DIR:+${DATA_DIR}/}via-nim-cache:/opt/nim/.cache
     deploy:
       resources:
         reservations:
