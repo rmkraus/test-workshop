@@ -11,6 +11,7 @@ dependencies = [
 [tool.brev]
 instance_type = "a2-highgpu-2g:nvidia-tesla-a100:2"
 workspace_group_id = "GCP"
+storage = 512
 ports = [
     { name = "jupyter", port = 8888 },
     { name = "frontend", port = 9100 },

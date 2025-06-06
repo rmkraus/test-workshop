@@ -104,24 +104,6 @@ configs:
       \  endpoint: \"http://host.docker.internal:60000/via-alert-callback\"\n  llm:\n\
       \    model: \"meta/llama-3.1-70b-instruct\"\n    base_url: \"https://integrate.api.nvidia.com/v1\"\
       \n    max_tokens: 2048\n    temperature: 0.2\n    top_p: 0.7\n"
-graph-db:
-  environment:
-    NEO4J_AUTH: ${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}
-    NEO4J_PLUGINS: '["apoc"]'
-  healthcheck:
-    interval: 1s
-    retries: 20
-    start_period: 3s
-    test: wget http://localhost:7474 || exit 1
-    timeout: 10s
-  hostname: graph-db
-  image: neo4j:5.26.4
-  networks:
-  - devx
-  ports:
-  - 7474:7474
-  - 7687:7687
-  restart: always
 networks:
   devx:
     driver: bridge
@@ -146,6 +128,24 @@ services:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
     - devx_home:/home/nvidia
+  graph-db:
+    environment:
+      NEO4J_AUTH: ${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}
+      NEO4J_PLUGINS: '["apoc"]'
+    healthcheck:
+      interval: 1s
+      retries: 20
+      start_period: 3s
+      test: wget http://localhost:7474 || exit 1
+      timeout: 10s
+    hostname: graph-db
+    image: neo4j:5.26.4
+    networks:
+    - devx
+    ports:
+    - 7474:7474
+    - 7687:7687
+    restart: always
   llama-3-1-70b-instruct:
     deploy:
       resources:

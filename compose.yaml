@@ -416,25 +416,25 @@ services:
       retries: 60
       start_period: 1800s
 
-# DEPENDENCIES
-graph-db:
-  hostname: graph-db
-  restart: always
-  ports:
-    - "7474:7474"
-    - "7687:7687"
-  environment:
-    NEO4J_AUTH: "${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}"
-    NEO4J_PLUGINS: '["apoc"]'
-  image: neo4j:5.26.4
-  networks:
-    - devx
-  healthcheck:
-    test: wget http://localhost:7474 || exit 1
-    interval: 1s
-    timeout: 10s
-    retries: 20
-    start_period: 3s
+  ## DEPENDENCIES
+  graph-db:
+    hostname: graph-db
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: "${GRAPH_DB_USERNAME:-neo4j}/${GRAPH_DB_PASSWORD:-password}"
+      NEO4J_PLUGINS: '["apoc"]'
+    image: neo4j:5.26.4
+    networks:
+      - devx
+    healthcheck:
+      test: wget http://localhost:7474 || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 20
+      start_period: 3s
 
 volumes:
   via-hf-cache:
