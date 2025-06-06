@@ -112,10 +112,9 @@ services:
     command:
     - sh
     - -c
-    - "apk add --no-cache inotify-tools &&\necho \"Watching /ephemeral for new directories...\"\
-      \ &&\nwhile true; do\n  inotifywait -m -e create --format \"%w%f\" \"/ephemeral\"\
-      \ | while read path; do\n    if [ -d \"$path\" ]; then\n      chmod 777 \"$path\"\
-      \n      echo \"chmod 777 $path\"\n    fi\n  done\ndone"
+    - "echo \"Starting directory permission watcher for /ephemeral...\" &&\nwhile\
+      \ true; do\n  find \"/ephemeral\" -type d ! -perm 777 -exec chmod 777 {} \\\
+      ; -print 2>/dev/null || true\n  sleep 10\ndone"
     environment:
     - DATA_DIR=/ephemeral
     image: alpine
@@ -138,6 +137,7 @@ services:
     - devx
     ports:
     - 8888:8888
+    restart: always
     volumes:
     - ../test-workshop:/project:cached
     - /var/run/docker.sock:/var/run/docker.sock
