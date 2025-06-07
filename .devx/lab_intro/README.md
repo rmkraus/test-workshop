@@ -60,15 +60,11 @@ This blueprint employs four NVIDIA NIM microservices.
 
 We will get started by using a Jupyter Notebook to send requests to the Visual Insights Agent's API. An OpenAPI specification for this API is available, and the API can be browsed, at 
 {{#isBrev}}
-https://api0-{{brevId}}.brevlab.com.
+https://api0-{{brevId}}.brevlab.com/docs
 {{/isBrev}}
 {{^isBrev}}
 http://{{ hostname }}:8100/docs
-{{/isBrev}
-}
-
-
-
+{{/isBrev}}
 
 Open <button onclick="openOrCreateFileInJupyterLab('labs/Intro_To_VSS.ipynb');"><i class="fas fa-flask"></i> labs/Intro_To_VSS.ipynb</button> to get started.
 
